@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Sausage Haven - Order Now</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+  <header class="bg-red-600 text-white p-6 shadow-md">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-bold">The Sausage Haven</h1>
+      <nav class="space-x-4">
+        <a href="#order" class="hover:underline">Order Now</a>
+        <a href="#contact" class="hover:underline">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="bg-gradient-to-r from-red-400 to-red-600 text-white py-20 text-center">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-4xl font-bold mb-4">Fresh & Delicious Sausages Delivered!</h2>
+      <p class="text-lg mb-6">Order online and get your favorite sausages straight to your hostel or home.</p>
+      <a href="#order" class="bg-white text-red-600 font-bold px-8 py-3 rounded-lg shadow hover:bg-gray-100 transition">Place Your Order</a>
+    </div>
+  </section>
+
+  <section id="order" class="py-16">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
+      <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">Place Your Order</h3>
+      <form id="paymentForm" class="space-y-6">
+        
+        <div>
+          <label for="fullName" class="block text-gray-700 font-medium mb-2">Full Name</label>
+          <input type="text" id="fullName" name="FullName" placeholder="e.g., John Doe" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div>
+		  
+        <div>
+          <label for="phoneNumber" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+          <input type="tel" id="phoneNumber" name="PhoneNumber" placeholder="e.g., 0241234567" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div>
+
+        <div>
+          <label for="deliveryLocation" class="block text-gray-700 font-medium mb-2">Delivery Location</label>
+          <input type="text" id="deliveryLocation" name="DeliveryLocation" placeholder="e.g., Hostel A, Room 12" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div>
+
+        <div>
+          <label for="quantityInput" class="block text-gray-700 font-medium mb-2">Quantity</label>
+          <input type="number" id="quantityInput" name="Quantity" min="1" value="1" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div>
+        
+        <div>
+          <label for="emailInput" class="block text-gray-700 font-medium mb-2">Email Address (for receipt)</label>
+          <input type="email" id="emailInput" name="Email" placeholder="e.g., yourname@email.com" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+        </div>
+
+        <div>
+          <label for="deliveryTime" class="block text-gray-700 font-medium mb-2">Preferred Delivery Time</label>
+          <input type="time" id="deliveryTime" name="DeliveryTime" required
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400">
+          <p class="text-gray-500 text-sm mt-1">Orders are prepared fresh and delivered as soon as possible.</p>
+        </div>
+
+        <div>
+          <label for="additionalNotes" class="block text-gray-700 font-medium mb-2">Additional Notes</label>
+          <textarea id="additionalNotes" name="AdditionalNotes" placeholder="Special requests..." rows="3"
+            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"></textarea>
+        </div>
+
+        <div class="text-center">
+          <button type="button" onclick="payWithPaystack()"
+            class="bg-red-600 text-white font-bold px-6 py-3 rounded-lg shadow hover:bg-red-700 transform hover:scale-105 transition duration-300">
+            Pay & Submit Order
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+
+  <section id="contact" class="py-16 bg-gray-100">
+    <div class="max-w-4xl mx-auto text-center">
+      <h3 class="text-3xl font-bold text-gray-800 mb-4">Contact Us</h3>
+      <p class="text-gray-600 mb-2">Phone: 0256507851</p>
+      <p class="text-gray-600">
+        Email: 
+        <a href="mailto:thesausagehaven@gmail.com" class="text-red-600 hover:underline">
+            thesausagehaven@gmail.com
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <footer class="bg-red-600 text-white p-6 mt-8 text-center">
+    © 2025 The Sausage Haven. All rights reserved.
+  </footer>
+  
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+
+  <script>
+    // --- IMPORTANT: CHANGE THESE THREE VALUES ---
+    const singleItemPrice = 1000; // Price of one sausage in pesewas/kobo (e.g., 1000 = 10.00 GHS/NGN)
+    const paystackPublicKey = 'YOUR_PUBLIC_KEY'; // Replace with your Public Key (pk_...)
+    const currencyCode = 'GHS'; // Replace with your currency (GHS, NGN, USD, etc.)
+    // ------------------------------------------
+
+
+    function payWithPaystack() {
+        // 1. Get values from the form
+        const quantity = parseInt(document.getElementById('quantityInput').value);
+        const email = document.getElementById('emailInput').value;
+        const fullName = document.getElementById('fullName').value;
+        const phone = document.getElementById('phoneNumber').value;
+        const location = document.getElementById('deliveryLocation').value;
+        const notes = document.getElementById('additionalNotes').value;
+        
+        // Basic form validation check
+        if (!quantity || !email || !fullName || !phone || !location) {
+            alert("Please fill in all required fields (Name, Email, Phone, Location, Quantity) before proceeding to payment.");
+            return; 
+        }
+
+        // Calculate total amount (in kobo/pesewas)
+        const totalAmount = quantity * singleItemPrice; 
+
+        let handler = Paystack.inline({
+            key: paystackPublicKey, 
+            email: email,
+            amount: totalAmount,
+            ref: ''+Math.floor((Math.random() * 1000000000) + 1), // unique reference
+            currency: currencyCode, 
+            
+            // Collects additional order data
+            metadata: {
+                custom_fields: [
+                    { display_name: "Customer Name", variable_name: "full_name", value: fullName },
+                    { display_name: "Phone Number", variable_name: "phone_number", value: phone },
+                    { display_name: "Delivery Location", variable_name: "location", value: location },
+                    { display_name: "Quantity", variable_name: "quantity", value: quantity },
+                    { display_name: "Notes", variable_name: "notes", value: notes }
+                ]
+            },
+
+            callback: function(response){
+                // This fires after a SUCCESSFUL payment
+                alert('Payment complete! Transaction reference: ' + response.reference + '. Your order is confirmed and being processed.');
+                
+                // You should set up a server-side webhook to verify this payment!
+
+                // Clear the form on successful submission
+                document.getElementById('paymentForm').reset();
+            },
+            onClose: function(){
+                // Fired if the user closes the payment modal
+                alert('Transaction cancelled. You can try again.');
+            }
+        });
+
+        handler.openIframe();
+    }
+  </script>
+
+</body>
+</html>
